@@ -77,35 +77,16 @@ function Dashboard() {
         console.error('MediaPipe load error:', err);
       }
 
-      // Load SFace ONNX model for face recognition (much better than face-api.js)
+      // Load face-api.js models from CDN for face recognition
+      // (SFace ONNX is better but 38MB — too heavy for deployed version)
       try {
-        ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@latest/dist/';
-        // Load SFace model — try local first, fallback to fetching from GitHub
-        let modelSource: string | ArrayBuffer = '/models/face_recognition.onnx';
-        try {
-          const check = await fetch('/models/face_recognition.onnx', { method: 'HEAD' });
-          if (!check.ok) throw new Error('Local model not found');
-        } catch {
-          console.log('Local SFace model not found, downloading from GitHub...');
-          const resp = await fetch('https://github.com/opencv/opencv_zoo/raw/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx');
-          modelSource = await resp.arrayBuffer();
-          console.log(`Downloaded SFace model: ${(modelSource.byteLength / 1024 / 1024).toFixed(1)}MB`);
-        }
-        const session = await ort.InferenceSession.create(modelSource, {
-          executionProviders: ['webgl', 'wasm'],
-        });
-        sfaceSessionRef.current = session;
-        console.log('SFace ONNX model loaded for recognition');
+        const FACEAPI_CDN = 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights';
+        await faceapi.nets.ssdMobilenetv1.loadFromUri(FACEAPI_CDN);
+        await faceapi.nets.faceRecognitionNet.loadFromUri(FACEAPI_CDN);
+        await faceapi.nets.faceLandmark68Net.loadFromUri(FACEAPI_CDN);
+        console.log('face-api.js recognition models loaded from CDN');
       } catch (err) {
-        console.error('SFace ONNX load error:', err);
-        // Fallback: load face-api.js recognition
-        try {
-          const FACEAPI_CDN = 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights';
-          await faceapi.nets.ssdMobilenetv1.loadFromUri(FACEAPI_CDN);
-          await faceapi.nets.faceRecognitionNet.loadFromUri(FACEAPI_CDN);
-          await faceapi.nets.faceLandmark68Net.loadFromUri(FACEAPI_CDN);
-          console.log('Fallback: face-api.js recognition loaded');
-        } catch {}
+        console.error('face-api.js load error:', err);
       }
 
       setFaceApiReady(true);
