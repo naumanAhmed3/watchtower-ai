@@ -80,7 +80,18 @@ function Dashboard() {
       // Load SFace ONNX model for face recognition (much better than face-api.js)
       try {
         ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@latest/dist/';
-        const session = await ort.InferenceSession.create('/models/face_recognition.onnx', {
+        // Load SFace model — try local first, fallback to fetching from GitHub
+        let modelSource: string | ArrayBuffer = '/models/face_recognition.onnx';
+        try {
+          const check = await fetch('/models/face_recognition.onnx', { method: 'HEAD' });
+          if (!check.ok) throw new Error('Local model not found');
+        } catch {
+          console.log('Local SFace model not found, downloading from GitHub...');
+          const resp = await fetch('https://github.com/opencv/opencv_zoo/raw/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx');
+          modelSource = await resp.arrayBuffer();
+          console.log(`Downloaded SFace model: ${(modelSource.byteLength / 1024 / 1024).toFixed(1)}MB`);
+        }
+        const session = await ort.InferenceSession.create(modelSource, {
           executionProviders: ['webgl', 'wasm'],
         });
         sfaceSessionRef.current = session;
@@ -89,9 +100,10 @@ function Dashboard() {
         console.error('SFace ONNX load error:', err);
         // Fallback: load face-api.js recognition
         try {
-          await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
-          await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
-          await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+          const FACEAPI_CDN = 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights';
+          await faceapi.nets.ssdMobilenetv1.loadFromUri(FACEAPI_CDN);
+          await faceapi.nets.faceRecognitionNet.loadFromUri(FACEAPI_CDN);
+          await faceapi.nets.faceLandmark68Net.loadFromUri(FACEAPI_CDN);
           console.log('Fallback: face-api.js recognition loaded');
         } catch {}
       }
