@@ -6,3 +6,4 @@ node_modules/
 .vercel
 public/models/face_recognition.onnx
 public/models/arcface_mobilefacenet.onnx
+public/models/
