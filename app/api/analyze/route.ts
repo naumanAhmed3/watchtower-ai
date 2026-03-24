@@ -1,6 +1,11 @@
 import OpenAI from 'openai';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Lazy init — don't create at build time
+let _openai: OpenAI | null = null;
+function getOpenAI() {
+  if (!_openai) _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  return _openai;
+}
 
 export const maxDuration = 30;
 
@@ -24,7 +29,7 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Invalid image data — too small or empty' }, { status: 400 });
     }
 
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: 'gpt-4o-mini',
       max_tokens: 200,
       messages: [
