@@ -10,7 +10,7 @@ declare module '@mediapipe/tasks-vision' {
 declare module 'onnxruntime-web' {
   export const env: { wasm: { wasmPaths: string } };
   export class InferenceSession {
-    static create(path: string, options?: any): Promise<InferenceSession>;
+    static create(path: string | ArrayBuffer, options?: any): Promise<InferenceSession>;
     run(feeds: Record<string, Tensor>): Promise<Record<string, Tensor>>;
   }
   export class Tensor {
