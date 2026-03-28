@@ -8,6 +8,11 @@ import { FaceDetector, FilesetResolver } from '@mediapipe/tasks-vision';
 import * as ort from 'onnxruntime-web';
 import { InlineGallery, type FaceEntry } from '@/components/face-gallery';
 
+// Backend API URL — Render for deployed, local Next.js API routes for dev
+const API_BASE = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+  ? '/api'
+  : 'https://watchtower-backend-2ct4.onrender.com';
+
 interface Alert {
   id: number;
   timestamp: string;
@@ -77,14 +82,25 @@ function Dashboard() {
         console.error('MediaPipe load error:', err);
       }
 
-      // Load face-api.js models from CDN for face recognition
-      // (SFace ONNX is better but 38MB — too heavy for deployed version)
+      // Load SFace ONNX model for face recognition (best accuracy)
+      try {
+        ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@latest/dist/';
+        const session = await ort.InferenceSession.create('/models/face_recognition.onnx', {
+          executionProviders: ['webgl', 'wasm'],
+        });
+        sfaceSessionRef.current = session;
+        console.log('SFace ONNX model loaded for recognition');
+      } catch (err) {
+        console.error('SFace ONNX load error:', err);
+      }
+
+      // Also load face-api.js as fallback from CDN
       try {
         const FACEAPI_CDN = 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights';
         await faceapi.nets.ssdMobilenetv1.loadFromUri(FACEAPI_CDN);
         await faceapi.nets.faceRecognitionNet.loadFromUri(FACEAPI_CDN);
         await faceapi.nets.faceLandmark68Net.loadFromUri(FACEAPI_CDN);
-        console.log('face-api.js recognition models loaded from CDN');
+        console.log('face-api.js fallback loaded from CDN');
       } catch (err) {
         console.error('face-api.js load error:', err);
       }
@@ -364,7 +380,7 @@ function Dashboard() {
     setAnalyzing(true);
     setCurrentFrame(frame);
     try {
-      const res = await fetch('/api/analyze', {
+      const res = await fetch(`${API_BASE}/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ frame, prompt }),
@@ -599,13 +615,13 @@ function Dashboard() {
   // IP Camera: start — kick off background stream capture on server
   const startIpCam = async () => {
     if (!ipCamUrl.trim()) return;
-    await fetch('/api/proxy-frame?url=' + encodeURIComponent(ipCamUrl) + '&action=start');
+    await fetch(`${API_BASE}/proxy-frame?url=${encodeURIComponent(ipCamUrl)}&action=start`);
     setIpCamActive(true);
   };
 
   // IP Camera: stop
   const stopIpCam = async () => {
-    await fetch('/api/proxy-frame?url=' + encodeURIComponent(ipCamUrl) + '&action=stop').catch(() => {});
+    await fetch(`${API_BASE}/proxy-frame?url=${encodeURIComponent(ipCamUrl)}&action=stop`).catch(() => {});
     setIpCamActive(false);
     setCurrentFrame('');
   };
@@ -617,7 +633,7 @@ function Dashboard() {
     const capture = async () => {
       try {
         // Fetch latest cached frame — instant, no new camera connection
-        const res = await fetch('/api/proxy-frame?url=' + encodeURIComponent(ipCamUrl));
+        const res = await fetch(`${API_BASE}/proxy-frame?url=${encodeURIComponent(ipCamUrl)}`);
         const data = await res.json();
         if (data.frame && data.size > 500) {
           setCurrentFrame(data.frame);
