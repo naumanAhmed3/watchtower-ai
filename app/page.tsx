@@ -8,10 +8,15 @@ import { FaceDetector, FilesetResolver } from '@mediapipe/tasks-vision';
 import * as ort from 'onnxruntime-web';
 import { InlineGallery, type FaceEntry } from '@/components/face-gallery';
 
-// Backend API URL — Render for deployed, local Next.js API routes for dev
-const API_BASE = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-  ? '/api'
-  : 'https://watchtower-backend-2ct4.onrender.com';
+// Backend API URL — determined at runtime in the browser
+function getApiBase() {
+  if (typeof window === 'undefined') return '/api'; // SSR fallback
+  const host = window.location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1' || host.startsWith('192.168.')) {
+    return '/api'; // Local dev — use Next.js API routes
+  }
+  return 'https://watchtower-backend-2ct4.onrender.com'; // Deployed — use Render backend
+}
 
 interface Alert {
   id: number;
@@ -380,7 +385,7 @@ function Dashboard() {
     setAnalyzing(true);
     setCurrentFrame(frame);
     try {
-      const res = await fetch(`${API_BASE}/analyze`, {
+      const res = await fetch(`${getApiBase()}/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ frame, prompt }),
@@ -615,13 +620,13 @@ function Dashboard() {
   // IP Camera: start — kick off background stream capture on server
   const startIpCam = async () => {
     if (!ipCamUrl.trim()) return;
-    await fetch(`${API_BASE}/proxy-frame?url=${encodeURIComponent(ipCamUrl)}&action=start`);
+    await fetch(`${getApiBase()}/proxy-frame?url=${encodeURIComponent(ipCamUrl)}&action=start`);
     setIpCamActive(true);
   };
 
   // IP Camera: stop
   const stopIpCam = async () => {
-    await fetch(`${API_BASE}/proxy-frame?url=${encodeURIComponent(ipCamUrl)}&action=stop`).catch(() => {});
+    await fetch(`${getApiBase()}/proxy-frame?url=${encodeURIComponent(ipCamUrl)}&action=stop`).catch(() => {});
     setIpCamActive(false);
     setCurrentFrame('');
   };
@@ -633,7 +638,7 @@ function Dashboard() {
     const capture = async () => {
       try {
         // Fetch latest cached frame — instant, no new camera connection
-        const res = await fetch(`${API_BASE}/proxy-frame?url=${encodeURIComponent(ipCamUrl)}`);
+        const res = await fetch(`${getApiBase()}/proxy-frame?url=${encodeURIComponent(ipCamUrl)}`);
         const data = await res.json();
         if (data.frame && data.size > 500) {
           setCurrentFrame(data.frame);
