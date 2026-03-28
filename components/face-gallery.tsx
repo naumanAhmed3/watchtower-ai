@@ -2,16 +2,9 @@
 
 import { useState } from 'react';
 import { Camera, Clock, AlertTriangle, Users, Grid3X3, User, ChevronLeft, Download } from 'lucide-react';
+import type { FaceEntry } from '@/lib/types';
 
-export interface FaceEntry {
-  id: number;
-  personId?: number;
-  faceImage: string;
-  fullFrame: string;
-  timestamp: string;
-  alertDescription: string;
-  confidence: number;
-}
+export type { FaceEntry };
 
 export function InlineGallery({ faces }: { faces: FaceEntry[] }) {
   const [tab, setTab] = useState<'captures' | 'persons'>('captures');

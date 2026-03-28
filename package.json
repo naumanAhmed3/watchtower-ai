@@ -1,5 +1,5 @@
 {
-  "name": "surveillance-demo",
+  "name": "omnisight-demo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -18,6 +18,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "face-api.js": "^0.22.2",
+    "framer-motion": "^12.38.0",
     "lucide-react": "^1.0.1",
     "next": "^16.2.1",
     "onnxruntime-web": "^1.24.3",

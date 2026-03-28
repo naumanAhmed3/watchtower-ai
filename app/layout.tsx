@@ -5,8 +5,8 @@ import './globals.css';
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
 
 export const metadata: Metadata = {
-  title: 'WatchTower AI — Intelligent Surveillance by NovaBuild Studios',
-  description: 'AI-powered camera surveillance that watches for activities you specify. Scan QR to connect your camera.',
+  title: 'OmniSight — Intelligent CCTV Monitoring by NovaBuild Studios',
+  description: 'AI-powered threat detection for your existing CCTV system. Define threats in plain English, get real-time alerts with face recognition.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
