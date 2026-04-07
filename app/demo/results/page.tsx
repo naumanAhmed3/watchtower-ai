@@ -112,14 +112,13 @@ export default function ResultsPage() {
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-cyan-600 text-white font-semibold hover:scale-[1.02] transition-all shadow-lg shadow-emerald-600/20">
             <RotateCcw className="w-4 h-4" />Run Another Demo
           </button>
-          <a href="mailto:contact@novabuild.studio"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-gray-300 font-medium hover:bg-white/10 transition-all">
-            Request Full Demo <ArrowRight className="w-4 h-4" />
-          </a>
         </motion.div>
 
-        <footer className="text-center py-4 border-t border-white/5">
-          <p className="text-xs text-gray-600">Built by <span className="text-emerald-400">NovaBuild Studios</span></p>
+        <footer className="text-center py-6 border-t border-white/[0.06]">
+          <a href="#" className="group inline-flex items-center gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-white/20 group-hover:bg-emerald-500 group-hover:shadow-[0_0_6px_rgba(16,185,129,0.4)] transition-all duration-300" />
+            <span className="text-[10px] text-white/20 group-hover:text-emerald-400 transition-colors duration-300">nauman.devhunt</span>
+          </a>
         </footer>
       </div>
     </main>

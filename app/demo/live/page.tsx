@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Camera, Eye, Square, AlertTriangle, CheckCircle, Clock, Loader2 } from 'lucide-react';
+import { Camera, Eye, Square, AlertTriangle, CheckCircle, Clock, Loader2, SwitchCamera } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useDemoContext } from '@/lib/demo-context';
 import { useWebcam } from '@/lib/use-webcam';
@@ -10,7 +10,7 @@ import { Nav } from '@/components/nav';
 import { StatsBar } from '@/components/stats-bar';
 import { CountdownTimer } from '@/components/countdown-timer';
 
-const EXAMPLES = ['Person falling down', 'Fire or smoke', 'Someone running', 'Unattended bag', 'Person with weapon', 'Vehicle in restricted area'];
+const EXAMPLES = ['Person not wearing safety vest', 'Unauthorized person in restricted zone', 'Worker fallen or lying on ground', 'Fire or smoke detected', 'Unattended package or object', 'Forklift in pedestrian area'];
 
 export default function LiveDemoPage() {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function LiveDemoPage() {
     prompt, setPrompt, alerts, stats, analyzing, currentFrame,
     analyzeFrame, timeRemaining, timerActive, startSession, endSession, faceApiReady,
   } = useDemoContext();
-  const { videoRef, canvasRef, webcamActive, startWebcam, stopWebcam, captureFrame } = useWebcam();
+  const { videoRef, canvasRef, webcamActive, startWebcam, stopWebcam, captureFrame, switchCamera } = useWebcam();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isWatching = timerActive;
 
@@ -146,8 +146,17 @@ export default function LiveDemoPage() {
                   </div>
                 )}
 
+                {/* Camera switch button */}
+                {webcamActive && (
+                  <button onClick={switchCamera}
+                    className="absolute bottom-3 right-3 z-10 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all"
+                    title="Switch camera">
+                    <SwitchCamera className="w-4.5 h-4.5" />
+                  </button>
+                )}
+
                 {!webcamActive && (
-                  <button onClick={startWebcam}
+                  <button onClick={() => startWebcam()}
                     className="flex flex-col items-center gap-3 text-gray-500 hover:text-emerald-400 transition-colors">
                     <Camera className="w-16 h-16" />
                     <span className="text-sm font-medium">Click to start webcam</span>

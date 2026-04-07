@@ -1,137 +1,139 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Eye, Camera, MessageSquare, Bell, ScanFace, ArrowRight, Shield, Zap } from 'lucide-react';
+import { Camera, MessageSquare, Bell, ScanFace, ArrowRight, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { Nav } from '@/components/nav';
 
-const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } };
-const stagger = { visible: { transition: { staggerChildren: 0.15 } } };
+const fadeUp = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } };
 
-const VALUE_PROPS = [
-  { icon: Camera, title: 'Works With Any Camera', desc: 'Connect your existing CCTV cameras, webcams, or phone cameras. No new hardware required.' },
-  { icon: MessageSquare, title: 'Define Threats in Plain English', desc: 'Tell the AI what to watch for in natural language. No complex rules or programming.' },
-  { icon: Bell, title: 'Real-Time Intelligent Alerts', desc: 'Get instant notifications when threats are detected. Every alert includes confidence scoring and evidence.' },
-  { icon: ScanFace, title: 'Face Recognition & Tracking', desc: 'Automatically identify and track unique individuals across your camera feeds with on-device AI.' },
+const FEATURES = [
+  { icon: Camera, title: 'Works With Any Camera', desc: 'Connects to existing CCTV infrastructure. No new hardware needed. IP cameras, webcams, RTSP feeds.' },
+  { icon: MessageSquare, title: 'Plain English Rules', desc: 'Guards define threats naturally: "Person in restricted area after 6pm" or "Forklift in pedestrian zone".' },
+  { icon: Bell, title: 'Real-Time Alerts', desc: 'Instant notifications when AI detects a match. Sub-3-second response time with frame evidence.' },
+  { icon: ScanFace, title: 'Face Recognition', desc: 'On-device face detection and tracking. Identify repeat visitors, track individuals across frames.' },
 ];
 
-export default function LandingPage() {
+export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-emerald-950 text-white overflow-hidden">
-      <Nav />
-
-      {/* Animated grid background */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.08),transparent_70%)]" />
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }} />
+    <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
+      {/* Background glow */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-emerald-600/8 blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-600/8 blur-[120px]" />
       </div>
 
+      <Nav />
+
       {/* Hero */}
-      <section className="relative z-10 max-w-5xl mx-auto px-4 pt-24 pb-20 text-center">
-        <motion.div initial="hidden" animate="visible" variants={stagger}>
-          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-8">
-            <Shield className="w-3.5 h-3.5" />
-            AI-Powered Intelligent Surveillance
-          </motion.div>
+      <section className="relative max-w-5xl mx-auto px-6 pt-20 sm:pt-32 pb-16 sm:pb-24">
+        <motion.div className="max-w-3xl" {...fadeUp}>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-[11px] text-white/40 tracking-wide">Client Project — Atlas Freight &amp; Logistics</span>
+          </div>
 
-          <motion.h1 variants={fadeUp} className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6">
-            <span className="block">Your Cameras</span>
-            <span className="block bg-gradient-to-r from-emerald-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
-              See Everything.
-            </span>
-            <span className="block text-gray-300">Now They Understand It.</span>
-          </motion.h1>
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
+            AI{' '}
+            <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+              Surveillance
+            </span>{' '}
+            System
+          </h1>
 
-          <motion.p variants={fadeUp} className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            AI-powered threat detection for your existing CCTV system.
-            No new hardware. No complex rules. Just smarter security.
-          </motion.p>
+          <p className="text-lg sm:text-xl text-white/40 max-w-xl leading-relaxed mb-4">
+            Built for a warehouse operator monitoring 12 facilities with 200+ cameras
+          </p>
 
-          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/demo"
-              className="group inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-cyan-600 text-white font-semibold text-base shadow-lg shadow-emerald-600/25 hover:shadow-emerald-600/40 hover:scale-[1.02] transition-all">
-              See How It Works
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link href="/demo/live"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-gray-300 font-medium text-sm hover:bg-white/10 transition-all">
-              <Zap className="w-4 h-4 text-amber-400" />
-              Jump to Live Demo
-            </Link>
-          </motion.div>
+          <p className="text-sm text-white/25 max-w-lg leading-relaxed mb-10">
+            Atlas Freight&apos;s security team was manually monitoring 200+ CCTV feeds across 12 warehouses. Incidents — falls, unauthorized access, safety violations — went unnoticed for an average of 45 minutes. They needed AI that watches everything simultaneously and alerts instantly.
+          </p>
+
+          <Link href="/demo/live" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 text-white text-sm font-semibold hover:from-emerald-500 hover:to-cyan-500 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]">
+            Try Live Demo
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </motion.div>
       </section>
 
-      {/* Value Props */}
-      <section className="relative z-10 max-w-5xl mx-auto px-4 pb-24">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          variants={stagger}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-        >
-          {VALUE_PROPS.map((prop) => (
-            <motion.div key={prop.title} variants={fadeUp}
-              className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 hover:bg-white/[0.06] hover:border-emerald-500/20 transition-all group">
-              <div className="w-11 h-11 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 transition-colors">
-                <prop.icon className="w-5 h-5 text-emerald-400" />
+      {/* Challenge → Solution */}
+      <section className="relative max-w-5xl mx-auto px-6 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <motion.div {...fadeUp} transition={{ delay: 0.1 }}>
+            <span className="text-[10px] text-white/20 tracking-[0.2em] uppercase">The Challenge</span>
+            <p className="text-sm text-white/40 leading-relaxed mt-3">
+              200+ cameras across 12 warehouses, but only 8 guards on rotation. By the time someone noticed an incident on a feed, the average response time was 45 minutes. Safety violations, unauthorized access after hours, and workplace injuries were going unreported.
+            </p>
+          </motion.div>
+          <motion.div {...fadeUp} transition={{ delay: 0.2 }}>
+            <span className="text-[10px] text-white/20 tracking-[0.2em] uppercase">The Solution</span>
+            <p className="text-sm text-white/40 leading-relaxed mt-3">
+              An AI layer that sits on top of their existing cameras. Guards write rules in plain English — &ldquo;person in hard-hat zone without helmet&rdquo; or &ldquo;forklift in pedestrian area.&rdquo; The system watches every feed simultaneously and alerts within seconds, with frame evidence and face tracking.
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Client card */}
+        <motion.div className="mt-12 inline-flex items-center gap-4 px-5 py-4 rounded-2xl border border-white/[0.06] bg-white/[0.02]" {...fadeUp} transition={{ delay: 0.3 }}>
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600/20 to-cyan-600/20 flex items-center justify-center text-lg">🏭</div>
+          <div>
+            <p className="text-sm font-medium text-white/70">Atlas Freight &amp; Logistics</p>
+            <p className="text-xs text-white/30">Warehouse Operations · 12 Facilities · 200+ Cameras</p>
+          </div>
+          <div className="hidden sm:block ml-4 pl-4 border-l border-white/[0.06]">
+            <p className="text-xs text-emerald-400/80 italic">&ldquo;Response time: 45 min → 30 seconds&rdquo;</p>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Features */}
+      <section className="relative max-w-5xl mx-auto px-6 pb-24">
+        <span className="text-[10px] text-white/20 tracking-[0.2em] uppercase">Key Capabilities</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+          {FEATURES.map((f, i) => (
+            <motion.div key={i} className="group p-5 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.1] transition-all duration-300" {...fadeUp} transition={{ delay: 0.1 * i }}>
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center mb-4 group-hover:shadow-lg transition-shadow">
+                <f.icon className="w-4 h-4 text-white" />
               </div>
-              <h3 className="text-sm font-semibold text-white mb-2">{prop.title}</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">{prop.desc}</p>
+              <h3 className="text-sm font-semibold text-white/80 mb-2">{f.title}</h3>
+              <p className="text-xs text-white/30 leading-relaxed">{f.desc}</p>
             </motion.div>
           ))}
-        </motion.div>
-      </section>
-
-      {/* Social proof / stats strip */}
-      <section className="relative z-10 border-y border-white/5 bg-white/[0.02]">
-        <div className="max-w-5xl mx-auto px-4 py-10">
-          <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
-            variants={stagger}
-            className="grid grid-cols-3 gap-8 text-center"
-          >
-            {[
-              { value: '< 3s', label: 'Threat Detection Time' },
-              { value: '99.2%', label: 'Face Recognition Accuracy' },
-              { value: '0', label: 'Additional Hardware Needed' },
-            ].map(stat => (
-              <motion.div key={stat.label} variants={fadeUp}>
-                <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">{stat.value}</p>
-                <p className="text-xs text-gray-500 mt-1">{stat.label}</p>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative z-10 max-w-5xl mx-auto px-4 py-20 text-center">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-          <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl font-bold mb-4">
-            Ready to see it in action?
-          </motion.h2>
-          <motion.p variants={fadeUp} className="text-gray-400 mb-8 max-w-md mx-auto">
-            Try the live demo with your webcam. No sign-up, no setup, no credit card.
-          </motion.p>
-          <motion.div variants={fadeUp}>
-            <Link href="/demo"
-              className="group inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-cyan-600 text-white font-semibold shadow-lg shadow-emerald-600/25 hover:shadow-emerald-600/40 hover:scale-[1.02] transition-all">
-              Start Free Demo
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </motion.div>
-        </motion.div>
+      {/* Portfolio disclaimer */}
+      <section className="relative max-w-5xl mx-auto px-6 pb-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/[0.06] bg-white/[0.02] mb-4">
+            <Shield className="w-3.5 h-3.5 text-amber-400/60" />
+            <span className="text-[11px] text-white/30">Portfolio Preview</span>
+          </div>
+          <p className="text-xs text-white/20 leading-relaxed max-w-lg mx-auto">
+            What you see here is a curated subset of features, shared with our client&apos;s permission for portfolio purposes. The production system delivered to Atlas Freight includes multi-camera grid monitoring, shift-based rule scheduling, incident report generation, integration with their existing access control systems, and a mobile app for on-the-go alerts.
+          </p>
+        </div>
+      </section>
+
+      {/* Bottom CTA */}
+      <section className="relative max-w-5xl mx-auto px-6 pb-20 text-center">
+        <p className="text-sm text-white/20 mb-6">See it in action with your camera</p>
+        <Link href="/demo/live" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 text-white text-sm font-semibold hover:from-emerald-500 hover:to-cyan-500 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]">
+          Try the Live Demo
+          <ArrowRight className="w-4 h-4" />
+        </Link>
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/5 py-6 text-center">
-        <p className="text-xs text-gray-600">Built by <span className="text-emerald-400">NovaBuild Studios</span></p>
+      <footer className="border-t border-white/[0.06] relative">
+        <div className="max-w-5xl mx-auto px-6 py-6 flex items-center justify-between">
+          <a href="#" className="group inline-flex items-center gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-white/20 group-hover:bg-emerald-500 group-hover:shadow-[0_0_6px_rgba(16,185,129,0.4)] transition-all duration-300" />
+            <span className="text-[10px] text-white/20 group-hover:text-emerald-400 transition-colors duration-300">nauman.devhunt</span>
+          </a>
+          <span className="text-[10px] text-white/10">AI Surveillance System</span>
+        </div>
       </footer>
-    </main>
+    </div>
   );
 }

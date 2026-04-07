@@ -118,8 +118,11 @@ export default function HowItWorksPage() {
         </motion.div>
       </section>
 
-      <footer className="border-t border-white/5 py-6 text-center">
-        <p className="text-xs text-gray-600">Built by <span className="text-emerald-400">NovaBuild Studios</span></p>
+      <footer className="border-t border-white/[0.06] py-6 text-center">
+        <a href="#" className="group inline-flex items-center gap-1.5">
+          <span className="w-1 h-1 rounded-full bg-white/20 group-hover:bg-emerald-500 group-hover:shadow-[0_0_6px_rgba(16,185,129,0.4)] transition-all duration-300" />
+          <span className="text-[10px] text-white/20 group-hover:text-emerald-400 transition-colors duration-300">nauman.devhunt</span>
+        </a>
       </footer>
     </main>
   );
