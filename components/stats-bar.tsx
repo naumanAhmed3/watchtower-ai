@@ -11,11 +11,11 @@ export function StatsBar({ stats, watching }: { stats: DemoStats; watching?: boo
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
       {items.map(s => (
-        <div key={s.label} className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
-          <p className={`text-lg font-bold ${s.color}`}>{s.value}</p>
-          <p className="text-[10px] text-gray-500">{s.label}</p>
+        <div key={s.label} className={`bg-white/5 border border-white/10 rounded-xl p-4 text-center ${watching ? 'animate-neon' : ''}`}>
+          <p className={`text-xl sm:text-lg font-bold tabular-nums ${s.color}`}>{s.value}</p>
+          <p className="text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">{s.label}</p>
         </div>
       ))}
     </div>

@@ -73,7 +73,7 @@ export default function LiveDemoPage() {
           <div className="flex items-center gap-4">
             <div className="flex-1">
               <label className="text-sm font-semibold text-gray-300 mb-2 block">What should AI watch for?</label>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <input
                   value={prompt}
                   onChange={e => setPrompt(e.target.value)}
@@ -146,12 +146,22 @@ export default function LiveDemoPage() {
                   </div>
                 )}
 
+                {/* Sci-fi corner brackets */}
+                {isWatching && webcamActive && (
+                  <>
+                    <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-emerald-400/40 rounded-tl-sm animate-corner pointer-events-none z-10" />
+                    <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-emerald-400/40 rounded-tr-sm animate-corner pointer-events-none z-10" style={{ animationDelay: '0.5s' }} />
+                    <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-emerald-400/40 rounded-bl-sm animate-corner pointer-events-none z-10" style={{ animationDelay: '1s' }} />
+                    <div className="absolute bottom-2 right-14 w-6 h-6 border-b-2 border-r-2 border-emerald-400/40 rounded-br-sm animate-corner pointer-events-none z-10" style={{ animationDelay: '1.5s' }} />
+                  </>
+                )}
+
                 {/* Camera switch button */}
                 {webcamActive && (
                   <button onClick={switchCamera}
-                    className="absolute bottom-3 right-3 z-10 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/70 transition-all"
+                    className="absolute bottom-3 right-3 z-20 w-12 h-12 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/80 hover:border-emerald-400/40 transition-all active:scale-95"
                     title="Switch camera">
-                    <SwitchCamera className="w-4.5 h-4.5" />
+                    <SwitchCamera className="w-5 h-5" />
                   </button>
                 )}
 
@@ -170,7 +180,7 @@ export default function LiveDemoPage() {
           {/* Alert timeline */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
             className="lg:col-span-2">
-            <div className="bg-white/5 border border-white/10 rounded-2xl h-full max-h-[600px] flex flex-col">
+            <div className="bg-white/5 border border-white/10 rounded-2xl h-full max-h-[300px] lg:max-h-[600px] flex flex-col">
               <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0">
                 <span className="text-sm font-medium flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-amber-400" />Alert Timeline

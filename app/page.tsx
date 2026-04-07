@@ -49,7 +49,7 @@ export default function Home() {
             Atlas Freight&apos;s security team was manually monitoring 200+ CCTV feeds across 12 warehouses. Incidents — falls, unauthorized access, safety violations — went unnoticed for an average of 45 minutes. They needed AI that watches everything simultaneously and alerts instantly.
           </p>
 
-          <Link href="/demo/live" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 text-white text-sm font-semibold hover:from-emerald-500 hover:to-cyan-500 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]">
+          <Link href="/demo/live" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 text-white text-sm font-semibold hover:from-emerald-500 hover:to-cyan-500 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]">
             Try Live Demo
             <ArrowRight className="w-4 h-4" />
           </Link>
@@ -80,7 +80,7 @@ export default function Home() {
             <p className="text-sm font-medium text-white/70">Atlas Freight &amp; Logistics</p>
             <p className="text-xs text-white/30">Warehouse Operations · 12 Facilities · 200+ Cameras</p>
           </div>
-          <div className="hidden sm:block ml-4 pl-4 border-l border-white/[0.06]">
+          <div className="sm:ml-4 sm:pl-4 sm:border-l border-white/[0.06] mt-2 sm:mt-0">
             <p className="text-xs text-emerald-400/80 italic">&ldquo;Response time: 45 min → 30 seconds&rdquo;</p>
           </div>
         </motion.div>
